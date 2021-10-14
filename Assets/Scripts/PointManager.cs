@@ -204,143 +204,148 @@ public class PointManager : MonoBehaviour {
 		Time.timeScale = 1f;
 	}
 	
-	void FixedUpdate () {
-		if (generating == false) 
-		{
-			tornadoFader = Mathf.Clamp01(tornadoFader + Time.deltaTime / 10f);
-
-			float invDamping = 1f - damping;
-			for (int i = 0; i < pointCount; i++) 
-			{
-				//Point point = points[i];
-				if (points[i].anchor == false) 
-				{
-					// float startX = points[i].current.x;
-					// float startY = points[i].current.y;
-					// float startZ = points[i].current.z;
-
-					points[i].old.y += .01f;
-
-					// tornado force
-					float tdx = tornadoX+TornadoSway(points[i].current.y) - points[i].current.x;
-					float tdz = tornadoZ - points[i].current.z;
-					float tornadoDist = Mathf.Sqrt(tdx * tdx + tdz * tdz);
-					tdx /= tornadoDist;
-					tdz /= tornadoDist;
-					if (tornadoDist<tornadoMaxForceDist) 
-					{
-						float force = (1f - tornadoDist / tornadoMaxForceDist);
-						float yFader= Mathf.Clamp01(1f - points[i].current.y / tornadoHeight);
-						force *= tornadoFader*tornadoForce*Random.Range(-.3f,1.3f);
-						float forceY = tornadoUpForce;
-						points[i].old.y -= forceY * force;
-						float forceX = -tdz + tdx * tornadoInwardForce*yFader;
-						float forceZ = tdx + tdz * tornadoInwardForce*yFader;
-						points[i].old.x -= forceX * force;
-						points[i].old.z -= forceZ * force;
-					}
-
-					points[i].AssignOld(points[i].current.x, points[i].current.y, points[i].current.z);
+	void FixedUpdate ()
+	{
+		if (generating)
+			return;
 		
-					points[i].current.x += (points[i].current.x - points[i].old.x) * invDamping;
-					points[i].current.y += (points[i].current.y - points[i].old.y) * invDamping;
-					points[i].current.z += (points[i].current.z - points[i].old.z) * invDamping;
+		tornadoFader = Mathf.Clamp01(tornadoFader + Time.deltaTime / 10f);
 
-					// points[i].old.x = startX;
-					// points[i].old.y = startY;
-					// points[i].old.z = startZ;
-					if (points[i].current.y < 0f) 
-					{
-						points[i].current.y = 0f;
-						points[i].old.x = -points[i].old.y;
-						points[i].old.y += (points[i].current.x - points[i].old.x) * friction;
-						points[i].old.z += (points[i].current.z - points[i].old.z) * friction;
-					}
-				}
-			}
-
-			for (int i = 0; i < BarcountIndex; i++) 
+		float invDamping = 1f - damping;
+		for (int i = 0; i < pointCount; i++) 
+		{
+			//Point point = points[i];
+			if (points[i].anchor == false) 
 			{
-				//Bar bar = bars[i];
+				float3 start = new float3(points[i].current.x, points[i].current.y, points[i].current.z );
 
-				Point point1 = bars[i].point1;
-				Point point2 = bars[i].point2;
+				points[i].old.y += .01f;
 
-				float3 diff = GetDiff(point2.current, point1.current);
-
-				float dist = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
-				float extraDist = dist - bars[i].length;
-
-				float pushX = (diff.x / dist * extraDist) * .5f;
-				float pushY = (diff.y / dist * extraDist) * .5f;
-				float pushZ = (diff.z / dist * extraDist) * .5f;
-
-				if (point1.anchor == false && point2.anchor == false) 
+				// tornado force
+				float tdx = tornadoX+TornadoSway(points[i].current.y) - points[i].current.x;
+				float tdz = tornadoZ - points[i].current.z;
+				float tornadoDist = Mathf.Sqrt(tdx * tdx + tdz * tdz);
+				tdx /= tornadoDist;
+				tdz /= tornadoDist;
+				if (tornadoDist<tornadoMaxForceDist) 
 				{
-					point1.current.x += pushX;
-					point1.current.y += pushY;
-					point1.current.z += pushZ;
-					point2.current.x -= pushX;
-					point2.current.y -= pushY;
-					point2.current.z -= pushZ;
-				} 
-				else if (point1.anchor) {
-					point2.current.x -= pushX*2f;
-					point2.current.y -= pushY*2f;
-					point2.current.z -= pushZ*2f;
-				} 
-				else if (point2.anchor) {
-					point1.current.x += pushX*2f;
-					point1.current.y += pushY*2f;
-					point1.current.z += pushZ*2f;
+					float force = (1f - tornadoDist / tornadoMaxForceDist);
+					float yFader= Mathf.Clamp01(1f - points[i].current.y / tornadoHeight);
+					force *= tornadoFader*tornadoForce*Random.Range(-.3f,1.3f);
+					float forceY = tornadoUpForce;
+					points[i].old.y -= forceY * force;
+					float forceX = -tdz + tdx * tornadoInwardForce*yFader;
+					float forceZ = tdx + tdz * tornadoInwardForce*yFader;
+					points[i].old.x -= forceX * force;
+					points[i].old.z -= forceZ * force;
 				}
-
-				if (diff.x/dist * bars[i].oldD.x + diff.y/dist*bars[i].oldD.y + diff.z/dist*bars[i].oldD.z<.99f) 
+				
+				float3 newCurrent = new float3(points[i].current.x - points[i].old.x, points[i].current.y - points[i].old.y, points[i].current.z - points[i].old.z);
+				newCurrent *= invDamping;
+				points[i].AddToCurrent(newCurrent);
+				// points[i].current.x += (points[i].current.x - points[i].old.x) * invDamping;
+				// points[i].current.y += (points[i].current.y - points[i].old.y) * invDamping;
+				// points[i].current.z += (points[i].current.z - points[i].old.z) * invDamping;
+				
+				points[i].AssignOld(start.x, start.y, start.z);
+				
+				if (points[i].current.y < 0f) 
 				{
-					// bar has rotated: expensive full-matrix computation
-					bars[i].matrix = Matrix4x4.TRS(new Vector3((point1.current.x + point2.current.x) * .5f,(point1.current.y + point2.current.y) * .5f,(point1.current.z + point2.current.z) * .5f),
-										   Quaternion.LookRotation(new Vector3(diff.x,diff.y,diff.z)),
-										   new Vector3(bars[i].thickness,bars[i].thickness,bars[i].length));
-					bars[i].oldD.x = diff.x / dist;
-					bars[i].oldD.y = diff.y / dist;
-					bars[i].oldD.z = diff.z / dist;
-				} 
-				else 
-				{
-					// bar hasn't rotated: only update the position elements
-					Matrix4x4 matrix = bars[i].matrix;
-					matrix.m03 = (point1.current.x + point2.current.x) * .5f;
-					matrix.m13 = (point1.current.y + point2.current.y) * .5f;
-					matrix.m23 = (point1.current.z + point2.current.z) * .5f;
-					bars[i].matrix = matrix;
+					points[i].current.y = 0f;
+					points[i].old.x = -points[i].old.y;
+					points[i].old.y += (points[i].current.x - points[i].old.x) * friction;
+					points[i].old.z += (points[i].current.z - points[i].old.z) * friction;
 				}
-
-				if (Mathf.Abs(extraDist) > breakResistance) 
-				{
-					if (point2.neighborCount>1) 
-					{
-						point2.neighborCount--;
-						Point newPoint = new Point();
-						newPoint.CopyFrom(point2);
-						newPoint.neighborCount = 1;
-						points[pointCount].CopyFrom(newPoint);
-						bars[i].point2.CopyFrom(newPoint);
-						pointCount++;
-					} 
-					else if (point1.neighborCount>1) 
-					{
-						point1.neighborCount--;
-						Point newPoint = new Point();
-						newPoint.CopyFrom(point1);
-						newPoint.neighborCount = 1;
-						points[pointCount].CopyFrom(newPoint);
-						bars[i].point1.CopyFrom(newPoint);
-						pointCount++;
-					}
-				}
-
-				matrices[i / instancesPerBatch][i % instancesPerBatch] = bars[i].matrix;
 			}
+		}
+
+		for (int i = 0; i < BarcountIndex; i++) 
+		{
+			//Bar bar = bars[i];
+
+			Point point1 = bars[i].point1;
+			Point point2 = bars[i].point2;
+
+			float3 diff = GetDiff(bars[i].point2.current, bars[i].point1.current);
+
+			float dist = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
+			float extraDist = dist - bars[i].length;
+
+			float3 push = new float3(diff / dist * extraDist);
+			push *= .5f;
+			// float pushX = (diff.x / dist * extraDist) * .5f;
+			// float pushY = (diff.y / dist * extraDist) * .5f;
+			// float pushZ = (diff.z / dist * extraDist) * .5f;
+
+			if (bars[i].point1.anchor == false && bars[i].point2.anchor == false) 
+			{
+				bars[i].point1.AddToCurrent(push);
+				bars[i].point2.AddToCurrent(-push);
+				// bars[i].point1.current.x += pushX;
+				// bars[i].point1.current.y += pushY;
+				// bars[i].point1.current.z += pushZ;
+				
+				// bars[i].point2.current.x -= pushX;
+				// bars[i].point2.current.y -= pushY;
+				// bars[i].point2.current.z -= pushZ;
+			} 
+			else if (bars[i].point1.anchor) {
+				bars[i].point2.AddToCurrent(-push * 2f);
+				// bars[i].point2.current.x -= pushX*2f;
+				// bars[i].point2.current.y -= pushY*2f;
+				// bars[i].point2.current.z -= pushZ*2f;
+			} 
+			else if (bars[i].point2.anchor) {
+				bars[i].point1.AddToCurrent(push * 2);
+				// bars[i].point1.current.x += pushX*2f;
+				// bars[i].point1.current.y += pushY*2f;
+				// bars[i].point1.current.z += pushZ*2f;
+			}
+
+			if (diff.x/dist * bars[i].oldD.x + diff.y/dist*bars[i].oldD.y + diff.z/dist*bars[i].oldD.z<.99f) 
+			{
+				// bar has rotated: expensive full-matrix computation
+				bars[i].matrix = Matrix4x4.TRS(new Vector3((bars[i].point1.current.x + bars[i].point2.current.x) * .5f,(bars[i].point1.current.y + bars[i].point2.current.y) * .5f,(bars[i].point1.current.z + bars[i].point2.current.z) * .5f),
+									   Quaternion.LookRotation(new Vector3(diff.x,diff.y,diff.z)),
+									   new Vector3(bars[i].thickness,bars[i].thickness,bars[i].length));
+				
+				bars[i].oldD = diff / dist;
+			} 
+			else 
+			{
+				// bar hasn't rotated: only update the position elements
+				Matrix4x4 matrix = bars[i].matrix;
+				matrix.m03 = (bars[i].point1.current.x + bars[i].point2.current.x) * .5f;
+				matrix.m13 = (bars[i].point1.current.y + bars[i].point2.current.y) * .5f;
+				matrix.m23 = (bars[i].point1.current.z + bars[i].point2.current.z) * .5f;
+				bars[i].matrix = matrix;
+			}
+
+			if (Mathf.Abs(extraDist) > breakResistance) 
+			{
+				if (bars[i].point2.neighborCount>1) 
+				{
+					bars[i].point2.neighborCount = 1;
+					// Point newPoint = new Point();
+					// newPoint.CopyFrom(point2);
+					// newPoint.neighborCount = 1;
+					points[pointCount].CopyFrom(bars[i].point2);
+					// bars[i].point2.CopyFrom(newPoint);
+					pointCount++;
+				} 
+				else if (bars[i].point1.neighborCount>1) 
+				{
+					bars[i].point1.neighborCount = 1;
+					// Point newPoint = new Point();
+					// newPoint.CopyFrom(bars[i].point1);
+					// newPoint.neighborCount = 1;
+					points[pointCount].CopyFrom(bars[i].point1);
+					// bars[i].point1.CopyFrom(newPoint);
+					pointCount++;
+				}
+			}
+
+			matrices[i / instancesPerBatch][i % instancesPerBatch] = bars[i].matrix;
 		}
 	}
 

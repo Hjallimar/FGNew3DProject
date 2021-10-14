@@ -33,4 +33,9 @@ public struct Point
 		old.y = y;
 		old.z = z;
 	}
+
+	public void AddToCurrent(float3 addition)
+	{
+		current += addition;
+	}
 }
