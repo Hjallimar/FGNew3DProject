@@ -13,7 +13,6 @@ public class PointManager : MonoBehaviour {
 	[Range(0f,1f)]
 	public float friction;
 	public float breakResistance;
-	public float expForce;
 	[Range(0f,1f)]
 	public float tornadoForce;
 	public float tornadoMaxForceDist;
@@ -40,15 +39,18 @@ public class PointManager : MonoBehaviour {
 	protected int BarcountIndex;
 	const int instancesPerBatch = 1023;
 
-	private void Awake() {
+	private void Awake() 
+	{
 		Time.timeScale = 0f;
 	}
-	void Start() {
+	void Start() 
+	{
 		StartCoroutine(Generate());
 		cam = Camera.main.transform;
 	}
 
-	public static float TornadoSway(float y) {
+	public static float TornadoSway(float y) 
+	{
 		return Mathf.Sin(y / 5f + Time.time/4f) * 3f;
 	}
 	
@@ -56,11 +58,11 @@ public class PointManager : MonoBehaviour {
 		generating = true;
 
 		Point[] pointsList = new Point[10000];
-		//List<Point> pointsList = new List<Point>();
 		PointercountIndex = 0;
+		
 		Bar[] barsList = new Bar[50000];
 		BarcountIndex = 0;
-		//List<Bar> barsList = new List<Bar>();
+		
 		List<List<Matrix4x4>> matricesList = new List<List<Matrix4x4>>();
 		matricesList.Add(new List<Matrix4x4>());
 
@@ -74,8 +76,9 @@ public class PointManager : MonoBehaviour {
 			{
 				Point point = new Point();
 				point.AssignCurrent(pos.x+spacing,j * spacing, pos.z-spacing);
-				point.AssignOld(point.current.x, point.current.y, point.current.z);  
-				
+				point.AssignOld(point.current.x, point.current.y, point.current.z);
+				point.Index = PointercountIndex;
+
 				if (j==0) 
 				{
 					point.anchor=true;
@@ -83,10 +86,10 @@ public class PointManager : MonoBehaviour {
 
 				pointsList[PointercountIndex].CopyFrom(point);
 				PointercountIndex++;
-				//pointsList.Add(point);
 				
 				point.AssignCurrent(pos.x-spacing,j * spacing, pos.z-spacing);
 				point.AssignOld(point.current.x, point.current.y, point.current.z);
+				point.Index = PointercountIndex;
 				
 				if (j==0) 
 				{
@@ -94,10 +97,10 @@ public class PointManager : MonoBehaviour {
 				}
 				pointsList[PointercountIndex].CopyFrom(point);
 				PointercountIndex++;
-				//pointsList.Add(point);
 				
 				point.AssignCurrent(pos.x+0f,j * spacing, pos.z+spacing);
 				point.AssignOld(point.current.x, point.current.y, point.current.z);
+				point.Index = PointercountIndex;
 				
 				if (j==0) 
 				{
@@ -105,12 +108,11 @@ public class PointManager : MonoBehaviour {
 				}
 				pointsList[PointercountIndex].CopyFrom(point);
 				PointercountIndex++;
-				//pointsList.Add(point);
 			}
 		}
 
 		// ground details
-		for (int i=0;i<600;i++) 
+		for (int i=0; i<600; i++) 
 		{
 			Vector3 pos = new Vector3(Random.Range(-55f,55f),0f,Random.Range(-55f,55f));
 			Point point = new Point();
@@ -119,7 +121,6 @@ public class PointManager : MonoBehaviour {
 			
 			pointsList[PointercountIndex].CopyFrom(point);
 			PointercountIndex++;
-			//pointsList.Add(point);
 
 			point.AssignCurrent(pos.x + Random.Range(.2f,.1f),pos.y+Random.Range(0f,.2f), pos.z + Random.Range(-.1f,-.2f));
 			point.AssignOld(point.current.x, point.current.y, point.current.z);
@@ -129,7 +130,6 @@ public class PointManager : MonoBehaviour {
 			}
 			pointsList[PointercountIndex].CopyFrom(point);
 			PointercountIndex++;
-			//pointsList.Add(point);
 		}
 
 		int batch = 0;
@@ -144,13 +144,11 @@ public class PointManager : MonoBehaviour {
 				{
 					pointsList[i].neighborCount++;
 					pointsList[j].neighborCount++;
-					// bar.point1.neighborCount++;
-					// bar.point2.neighborCount++;
 					
+					//this is null
 					barsList[BarcountIndex].AssignPoints(pointsList[i], pointsList[j]);
-					BarcountIndex++;
-					//barsList.Add(bar);
 					matricesList[batch].Add(barsList[BarcountIndex].matrix);
+					
 					if (matricesList[batch].Count == instancesPerBatch) 
 					{
 						batch++;
@@ -160,19 +158,28 @@ public class PointManager : MonoBehaviour {
 					{
 						yield return null;
 					}
+					BarcountIndex++;
 				}
 			}
 		}
+		
 		points = new Point[BarcountIndex * 2];
 		pointCount = 0;
+		int reversecount = 0;
 		for (int i=0;i<PointercountIndex;i++) 
 		{
 			if (pointsList[i].neighborCount > 0) 
 			{
-				points[pointCount] = pointsList[i];
+				points[pointCount].CopyFrom(pointsList[i]);
 				pointCount++;
 			}
+			else
+			{
+				reversecount++;
+			}
 		}
+		Debug.Log(reversecount + " is the amount of pointers that didn't have any neighbours");
+		//continue from here
 		Debug.Log(pointCount + " points, room for " + points.Length + " (" + BarcountIndex + " bars)");
 
 		bars = barsList;
@@ -196,9 +203,6 @@ public class PointManager : MonoBehaviour {
 			}
 		}
 
-		pointsList = null;
-		barsList = null;
-		matricesList = null;
 		System.GC.Collect();
 		generating = false;
 		Time.timeScale = 1f;
@@ -214,7 +218,6 @@ public class PointManager : MonoBehaviour {
 		float invDamping = 1f - damping;
 		for (int i = 0; i < pointCount; i++) 
 		{
-			//Point point = points[i];
 			if (points[i].anchor == false) 
 			{
 				float3 start = new float3(points[i].current.x, points[i].current.y, points[i].current.z );
@@ -243,17 +246,14 @@ public class PointManager : MonoBehaviour {
 				float3 newCurrent = new float3(points[i].current.x - points[i].old.x, points[i].current.y - points[i].old.y, points[i].current.z - points[i].old.z);
 				newCurrent *= invDamping;
 				points[i].AddToCurrent(newCurrent);
-				// points[i].current.x += (points[i].current.x - points[i].old.x) * invDamping;
-				// points[i].current.y += (points[i].current.y - points[i].old.y) * invDamping;
-				// points[i].current.z += (points[i].current.z - points[i].old.z) * invDamping;
 				
 				points[i].AssignOld(start.x, start.y, start.z);
 				
 				if (points[i].current.y < 0f) 
 				{
 					points[i].current.y = 0f;
-					points[i].old.x = -points[i].old.y;
-					points[i].old.y += (points[i].current.x - points[i].old.x) * friction;
+					points[i].old.y = -points[i].old.y;
+					points[i].old.x += (points[i].current.x - points[i].old.x) * friction;
 					points[i].old.z += (points[i].current.z - points[i].old.z) * friction;
 				}
 			}
@@ -261,51 +261,34 @@ public class PointManager : MonoBehaviour {
 
 		for (int i = 0; i < BarcountIndex; i++) 
 		{
-			//Bar bar = bars[i];
-
-			Point point1 = bars[i].point1;
-			Point point2 = bars[i].point2;
-
-			float3 diff = GetDiff(bars[i].point2.current, bars[i].point1.current);
+			float3 diff = GetDiff( bars[i].point1.current,bars[i].point2.current);
 
 			float dist = Mathf.Sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
 			float extraDist = dist - bars[i].length;
 
-			float3 push = new float3(diff / dist * extraDist);
-			push *= .5f;
-			// float pushX = (diff.x / dist * extraDist) * .5f;
-			// float pushY = (diff.y / dist * extraDist) * .5f;
-			// float pushZ = (diff.z / dist * extraDist) * .5f;
+			float3 push = (diff / dist * extraDist) * .5f;
 
 			if (bars[i].point1.anchor == false && bars[i].point2.anchor == false) 
 			{
-				bars[i].point1.AddToCurrent(push);
-				bars[i].point2.AddToCurrent(-push);
-				// bars[i].point1.current.x += pushX;
-				// bars[i].point1.current.y += pushY;
-				// bars[i].point1.current.z += pushZ;
-				
-				// bars[i].point2.current.x -= pushX;
-				// bars[i].point2.current.y -= pushY;
-				// bars[i].point2.current.z -= pushZ;
+				bars[i].point1.AddToCurrent(push); // ADDING NEW DISTANCE/LENGTH 
+				bars[i].point2.SubtractFromCurrent(push);
 			} 
-			else if (bars[i].point1.anchor) {
-				bars[i].point2.AddToCurrent(-push * 2f);
-				// bars[i].point2.current.x -= pushX*2f;
-				// bars[i].point2.current.y -= pushY*2f;
-				// bars[i].point2.current.z -= pushZ*2f;
+			else if (bars[i].point1.anchor) 
+			{
+				bars[i].point2.SubtractFromCurrent(push * 2f);
 			} 
-			else if (bars[i].point2.anchor) {
+			else if (bars[i].point2.anchor) 
+			{
 				bars[i].point1.AddToCurrent(push * 2);
-				// bars[i].point1.current.x += pushX*2f;
-				// bars[i].point1.current.y += pushY*2f;
-				// bars[i].point1.current.z += pushZ*2f;
 			}
 
 			if (diff.x/dist * bars[i].oldD.x + diff.y/dist*bars[i].oldD.y + diff.z/dist*bars[i].oldD.z<.99f) 
 			{
 				// bar has rotated: expensive full-matrix computation
-				bars[i].matrix = Matrix4x4.TRS(new Vector3((bars[i].point1.current.x + bars[i].point2.current.x) * .5f,(bars[i].point1.current.y + bars[i].point2.current.y) * .5f,(bars[i].point1.current.z + bars[i].point2.current.z) * .5f),
+				bars[i].matrix = Matrix4x4.TRS(new Vector3(
+						(bars[i].point1.current.x + bars[i].point2.current.x) * .5f,
+						(bars[i].point1.current.y + bars[i].point2.current.y) * .5f,
+						(bars[i].point1.current.z + bars[i].point2.current.z) * .5f),
 									   Quaternion.LookRotation(new Vector3(diff.x,diff.y,diff.z)),
 									   new Vector3(bars[i].thickness,bars[i].thickness,bars[i].length));
 				
@@ -323,24 +306,24 @@ public class PointManager : MonoBehaviour {
 
 			if (Mathf.Abs(extraDist) > breakResistance) 
 			{
-				if (bars[i].point2.neighborCount>1) 
+				if (bars[i].point2.neighborCount>1)
 				{
-					bars[i].point2.neighborCount = 1;
-					// Point newPoint = new Point();
-					// newPoint.CopyFrom(point2);
-					// newPoint.neighborCount = 1;
-					points[pointCount].CopyFrom(bars[i].point2);
-					// bars[i].point2.CopyFrom(newPoint);
+					bars[i].point2.neighborCount--;
+					Point newPoint = new Point();
+					newPoint.CopyFrom(bars[i].point2);
+					newPoint.neighborCount = 1;
+					points[pointCount].CopyFrom(newPoint);
+					bars[i].CopyToPoint2(newPoint);
 					pointCount++;
 				} 
 				else if (bars[i].point1.neighborCount>1) 
 				{
-					bars[i].point1.neighborCount = 1;
-					// Point newPoint = new Point();
-					// newPoint.CopyFrom(bars[i].point1);
-					// newPoint.neighborCount = 1;
-					points[pointCount].CopyFrom(bars[i].point1);
-					// bars[i].point1.CopyFrom(newPoint);
+					bars[i].point1.neighborCount--;
+					Point newPoint = new Point();
+					newPoint.CopyFrom(bars[i].point1);
+					newPoint.neighborCount = 1;
+					points[pointCount].CopyFrom(newPoint);
+					bars[i].CopyToPoint1(newPoint);
 					pointCount++;
 				}
 			}
@@ -354,8 +337,10 @@ public class PointManager : MonoBehaviour {
 		tornadoZ = Mathf.Sin(Time.time/6f * 1.618f) * 30f;
 		cam.position = new Vector3(tornadoX,10f,tornadoZ) - cam.forward * 60f;
 
-		if (matrices != null) {
-			for (int i = 0; i < matrices.Length; i++) {
+		if (matrices != null) 
+		{
+			for (int i = 0; i < matrices.Length; i++) 
+			{
 				Graphics.DrawMeshInstanced(barMesh,0,barMaterial,matrices[i],matrices[i].Length,matProps[i]);
 			}
 		}
