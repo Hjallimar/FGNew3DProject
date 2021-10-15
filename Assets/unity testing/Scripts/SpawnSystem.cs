@@ -1,30 +1,35 @@
+using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine;
 
 public class SpawnSystem : SystemBase
 {
+    public List<Entity> ActiveBullets;
+    private List<Entity> UnusedBullets;
     protected override void OnUpdate()
     {
-        // There is a single Settings component in the scene.
-        var settings = GetSingleton<Settings>();
-
-        // Use the prefab from Settings to create a given amount of instances.
-        var instances = new NativeArray<Entity>(settings.Count, Allocator.Temp);
-        EntityManager.Instantiate(settings.Prefab, instances);
-
-        // Loop of the instances to place them along the X axis.
-        for (int i = 0; i < instances.Length; i++)
+        var BulletSettings = GetSingleton<BulletSettings>();
+        var BulletInstances = new NativeArray<Entity>(BulletSettings.Count, Allocator.Temp);
+        EntityManager.Instantiate(BulletInstances.prefab, BulletSettings);
+        for (int i = 0; i < BulletInstances.Length; i++)
         {
-            EntityManager.SetComponentData(instances[i], new Translation {Value = new float3(i * 1.1f, 0, 0)});
+            EntityManager.SetComponentData(BulletInstances[i], new MoveComponent {Velocity = Vector3.up * ((i +1) * 5.0f)});
+            UnusedBullets.Add(BulletInstances[i]);
         }
-
-        // Native containers require explicit cleanup. There are special rules around
-        // Allocator.Temp that do not require cleanup, but calling Dispose is never wrong.
-        instances.Dispose();
-
-        // Disabling the system so it only runs once, this one is for initialization only.
+        BulletInstances.Dispose();
         Enabled = false;
+    }
+    
+    public void SpawnBullet()
+    {
+        if (UnusedBullets.Count > 0)
+        {
+            var Bullet = UnusedBullets[0];
+           ActiveBullets.Add(Bullet);
+           UnusedBullets.Remove(Bullet);
+        }
     }
 }

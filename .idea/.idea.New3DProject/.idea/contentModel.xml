@@ -8,6 +8,11 @@
       <e p="Assets" t="Include">
         <e p="space shooter" t="Include">
           <e p="Scripts" t="Include">
+            <e p="Componenets" t="Include">
+              <e p="MoveComponent.cs" t="Include" />
+              <e p="SettingsAuthoring2.cs" t="Include" />
+              <e p="Tags.cs" t="Include" />
+            </e>
             <e p="Player.cs" t="Include" />
           </e>
         </e>

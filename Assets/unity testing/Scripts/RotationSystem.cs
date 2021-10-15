@@ -1,6 +1,7 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine;
 
 public class RotationSystem : SystemBase
 {
@@ -14,6 +15,12 @@ public class RotationSystem : SystemBase
         Entities.ForEach((ref Rotation rotation, in Translation translation) =>
         {
             rotation.Value = quaternion.RotateX(offset + translation.Value.x * factor);
+        }).ScheduleParallel();
+
+        float deltaTime = Time.DeltaTime;
+        Entities.ForEach(( ref Translation translation, in MoveComponent MoveComp) =>
+        {
+            translation.Value += MoveComp.Velocity  * deltaTime;
         }).ScheduleParallel();
     }
 }
