@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class SpawnSystem : SystemBase
 {
-    public List<Entity> ActiveBullets;
-    private List<Entity> UnusedBullets;
     protected override void OnUpdate()
     {
-        var BulletSettings = GetSingleton<BulletSettings>();
+        SpawnBullets();
+        SpawnEnemies();
+
         /*var BulletInstances = new NativeArray<Entity>(BulletSettings.Count, Allocator.Temp);
         EntityManager.Instantiate(BulletInstances.prefab, BulletSettings);
         for (int i = 0; i < BulletInstances.Length; i++)
@@ -21,14 +21,24 @@ public class SpawnSystem : SystemBase
         BulletInstances.Dispose();*/
         Enabled = false;
     }
-    
-    public void SpawnBullet()
+
+    private void SpawnBullets()
     {
-        if (UnusedBullets.Count > 0)
-        {
-            var Bullet = UnusedBullets[0];
-           ActiveBullets.Add(Bullet);
-           UnusedBullets.Remove(Bullet);
-        }
+        var BulletSettings = GetSingleton<BulletSettings>();
+
+        var BulletInstances = new NativeArray<Entity>(BulletSettings.Count, Allocator.Temp);
+        EntityManager.Instantiate(BulletSettings.Prefab, BulletInstances);
+
+        BulletInstances.Dispose();
+    }
+
+    private void SpawnEnemies()
+    {
+        var EnemySettings = GetSingleton<EnemySettings>();
+
+        var EnemyInstances = new NativeArray<Entity>(EnemySettings.Count, Allocator.Temp);
+        EntityManager.Instantiate(EnemySettings.Prefab, EnemyInstances);
+
+        EnemyInstances.Dispose();
     }
 }

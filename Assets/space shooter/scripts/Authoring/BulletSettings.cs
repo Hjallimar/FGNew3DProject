@@ -5,5 +5,5 @@ using Unity.Entities;
 public struct BulletSettings : IComponentData
 {
     public Entity Prefab;
-    public int Count;
+    public int    Count;
 }
