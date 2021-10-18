@@ -1,9 +1,13 @@
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 [GenerateAuthoringComponent]
 public struct MoveComponent : IComponentData
 {
-    public float3 Velocity;
+    [HideInInspector] 
+    public Vector3 CurrentVelocity;
+    public float MaxSpeed;
+    public float Acceleration;
 }
 

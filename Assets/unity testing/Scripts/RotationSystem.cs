@@ -22,7 +22,7 @@ public class RotationSystem : SystemBase
         Vector3 Direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0.0f);
         Entities.ForEach(( ref MoveComponent MoveComp, in PlayerTag playerTag) =>
         {
-            MoveComp.Velocity = Direction.normalized * playerTag.Speed;
+            MoveComp.CurrentVelocity = Direction.normalized * playerTag.Speed;
         }).ScheduleParallel();
         #endregion
 
@@ -30,7 +30,7 @@ public class RotationSystem : SystemBase
         float deltaTime = Time.DeltaTime;
         Entities.ForEach(( ref Translation translation, in MoveComponent MoveComp) =>
         {
-            translation.Value += MoveComp.Velocity  * deltaTime;
+            translation.Value += (float3)MoveComp.CurrentVelocity  * deltaTime;
         }).ScheduleParallel();
         #endregion
 
@@ -38,7 +38,7 @@ public class RotationSystem : SystemBase
         Entities.ForEach(( ref HealthComponent HealthComp, in DamageTag DmgTag) =>
         {
             HealthComp.CurrentHealth -= DmgTag.Damage;
-            Debug.Log("I take damage, have: " + HealthComp.CurrentHealth + " left");
+            // Debug.Log("I take damage, have: " + HealthComp.CurrentHealth + " left");
             //Destroy(DmgTag);
 
         }).ScheduleParallel();
