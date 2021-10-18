@@ -24,8 +24,8 @@ public class Player : MonoBehaviour
         MoveComp.Velocity = InputDirection * Speed;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SpawnSystem Spawner = GetSingleton(SpawnSystem);
-            Spawner.SpawnBullet();
+            // SpawnSystem Spawner = GetSingleton(SpawnSystem);
+            // Spawner.SpawnBullet();
         }
     }
 }
