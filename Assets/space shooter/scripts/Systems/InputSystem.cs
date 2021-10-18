@@ -19,13 +19,13 @@ public class InputSystem : SystemBase
 
         float deltaTime = Time.DeltaTime;
         
-        Vector3 Direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0.0f);
+        Vector3 Direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0.0f).normalized;
         
         Entities
             .WithAll<PlayerTag>()
             .ForEach((ref MoveComponent moveComp) =>
         {
-            float dotVelocity = Mathf.Abs(Vector3.Dot(moveComp.CurrentVelocity, Direction.normalized));
+            float dotVelocity = Vector3.Dot(moveComp.CurrentVelocity, Direction);
             if (dotVelocity < moveComp.MaxSpeed)
             {
                 moveComp.CurrentVelocity += (moveComp.Acceleration * deltaTime) * Direction;
