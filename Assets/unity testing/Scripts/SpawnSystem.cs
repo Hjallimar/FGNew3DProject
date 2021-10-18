@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
-using Unity.Transforms;
 using UnityEngine;
+
 
 public class SpawnSystem : SystemBase
 {
@@ -12,14 +11,14 @@ public class SpawnSystem : SystemBase
     protected override void OnUpdate()
     {
         var BulletSettings = GetSingleton<BulletSettings>();
-        var BulletInstances = new NativeArray<Entity>(BulletSettings.Count, Allocator.Temp);
+        /*var BulletInstances = new NativeArray<Entity>(BulletSettings.Count, Allocator.Temp);
         EntityManager.Instantiate(BulletInstances.prefab, BulletSettings);
         for (int i = 0; i < BulletInstances.Length; i++)
         {
             EntityManager.SetComponentData(BulletInstances[i], new MoveComponent {Velocity = Vector3.up * ((i +1) * 5.0f)});
             UnusedBullets.Add(BulletInstances[i]);
         }
-        BulletInstances.Dispose();
+        BulletInstances.Dispose();*/
         Enabled = false;
     }
     
