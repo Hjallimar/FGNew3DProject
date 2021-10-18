@@ -18,13 +18,13 @@ public class RotationSystem : SystemBase
         //     rotation.Value = quaternion.RotateX(offset + translation.Value.x * factor);
         // }).ScheduleParallel();
 
-        #region Player Movement Input
-        Vector3 Direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0.0f);
-        Entities.ForEach(( ref MoveComponent MoveComp, in PlayerTag playerTag) =>
-        {
-            MoveComp.CurrentVelocity = Direction.normalized * playerTag.Speed;
-        }).ScheduleParallel();
-        #endregion
+        // #region Player Movement Input
+        // Vector3 Direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0.0f);
+        // Entities.ForEach(( ref MoveComponent MoveComp, in PlayerTag playerTag) =>
+        // {
+        //     MoveComp.CurrentVelocity = Direction.normalized * playerTag.Speed;
+        // }).ScheduleParallel();
+        // #endregion
 
         #region Movement Handler
         float deltaTime = Time.DeltaTime;
