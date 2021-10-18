@@ -4,20 +4,31 @@ using UnityEngine;
 
 public class EnemySpawnSystem : SystemBase
 {
-    
+    private int priviet = 0;
     
     protected override void OnCreate()
     {
-        var EnemySettings  = GetSingleton<EnemySettings>();
-        var EnemyInstances = new NativeArray<Entity>(EnemySettings.Count, Allocator.Temp);
-        EntityManager.Instantiate(EnemySettings.Prefab, EnemyInstances);
+        var enemySettings  = GetSingleton<EnemySettings>();
+        var EnemyInstances = new NativeArray<Entity>(enemySettings.Count, Allocator.Temp);
+        EntityManager.Instantiate(enemySettings.Prefab, EnemyInstances);
+        
+        Debug.Log("JAG KAN SKRIVA HÄR ;)");
 
+        priviet++;
         foreach (var e in EnemyInstances)
         {
             // EntityManager.SetComponentData(e, new Disabled{});
         }
+        
+        Debug.Log("JAG KAN SKRIVA HÄR OCKSÅ ;)");
 
+        priviet++;
+        
         EnemyInstances.Dispose();
+        Debug.Log("JAG KAN SKRIVA HÄR ASDFASDF ;)");
+        
+        priviet++;
+        int i = 0;
     }
 
     protected override void OnUpdate()

@@ -8,8 +8,8 @@ public class SpawnSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        SpawnBullets();
-        SpawnEnemies();
+        // SpawnBullets();
+        // SpawnEnemies();
 
         /*var BulletInstances = new NativeArray<Entity>(BulletSettings.Count, Allocator.Temp);
         EntityManager.Instantiate(BulletInstances.prefab, BulletSettings);

@@ -20,16 +20,25 @@ public class InputSystem : SystemBase
         float deltaTime = Time.DeltaTime;
         
         Vector3 Direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0.0f).normalized;
+        bool    DirectionMagnitudeIsApproximatelyZero = Mathf.Approximately(Direction.magnitude, 0);
         
         Entities
             .WithAll<PlayerTag>()
             .ForEach((ref MoveComponent moveComp) =>
-        {
-            float dotVelocity = Vector3.Dot(moveComp.CurrentVelocity, Direction);
-            if (dotVelocity < moveComp.MaxSpeed)
             {
-                moveComp.CurrentVelocity += (moveComp.Acceleration * deltaTime) * Direction;
-            }
-        }).Schedule();
+                if (DirectionMagnitudeIsApproximatelyZero)
+                {
+                    moveComp.CurrentVelocity *= 0.95f;
+                }
+                else
+                {
+                    moveComp.CurrentVelocity += (moveComp.Acceleration * deltaTime) * Direction;
+                    float dotVelocity = Vector3.Dot(moveComp.CurrentVelocity, Direction);
+                    if (dotVelocity >= moveComp.MaxSpeed)
+                    {
+                        moveComp.CurrentVelocity = moveComp.CurrentVelocity.normalized * moveComp.MaxSpeed;
+                    }
+                }
+            }).Schedule();
     }
 }
