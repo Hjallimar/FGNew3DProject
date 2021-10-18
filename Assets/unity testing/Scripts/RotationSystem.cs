@@ -1,11 +1,9 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 public class RotationSystem : SystemBase
 {
-    private float timer = 0;
     protected override void OnUpdate()
     {
         var offset = math.radians((float)Time.ElapsedTime * 90);
@@ -26,13 +24,13 @@ public class RotationSystem : SystemBase
         // }).ScheduleParallel();
         // #endregion
 
-        #region Movement Handler
-        float deltaTime = Time.DeltaTime;
-        Entities.ForEach(( ref Translation translation, in MoveComponent MoveComp) =>
-        {
-            translation.Value += (float3)MoveComp.CurrentVelocity  * deltaTime;
-        }).ScheduleParallel();
-        #endregion
+        // #region Movement Handler
+        // float deltaTime = Time.DeltaTime;
+        // Entities.ForEach(( ref Translation translation, in MoveComponent MoveComp) =>
+        // {
+        //     translation.Value += (float3)MoveComp.CurrentVelocity  * deltaTime;
+        // }).ScheduleParallel();
+        // #endregion
 
         #region Dammage Handler
         Entities.ForEach(( ref HealthComponent HealthComp, in DamageTag DmgTag) =>

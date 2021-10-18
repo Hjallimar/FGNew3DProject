@@ -135,12 +135,20 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5942741508768731984, guid: 4c30dc0566cc775468dbefeffbcb1839, type: 3}
+      propertyPath: MaxSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942741508768731984, guid: 4c30dc0566cc775468dbefeffbcb1839, type: 3}
       propertyPath: Velocity.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5942741508768731984, guid: 4c30dc0566cc775468dbefeffbcb1839, type: 3}
       propertyPath: Velocity.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942741508768731984, guid: 4c30dc0566cc775468dbefeffbcb1839, type: 3}
+      propertyPath: Acceleration
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7982231529155512098, guid: 4c30dc0566cc775468dbefeffbcb1839, type: 3}
       propertyPath: m_RootOrder
@@ -205,4 +213,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f85712d685502174dbf33240450f4894, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 10
