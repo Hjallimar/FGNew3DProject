@@ -8,4 +8,5 @@ public struct EnemySettings : IComponentData
 {
     public Entity Prefab;
     public int    Count;
+    public float  SpawnDelay;
 }
