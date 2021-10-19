@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Systems;
 
+[UpdateAfter(typeof(EndFramePhysicsSystem))]
 public class DamageSystem : JobComponentSystem
 {
     private BuildPhysicsWorld buildPhysicsWorld;
@@ -21,7 +22,7 @@ public class DamageSystem : JobComponentSystem
     [BurstCompile]
     struct DamageJob : ICollisionEventsJob
     {
-        [ReadOnly] public ComponentDataFromEntity<DamageTag> DamageGroup;
+        public ComponentDataFromEntity<DamageTag> DamageGroup;
         public ComponentDataFromEntity<HealthComponent> HealthGroup;
 
         public void Execute(CollisionEvent collisionEvent)
@@ -29,11 +30,16 @@ public class DamageSystem : JobComponentSystem
             Entity EntityA = collisionEvent.EntityA;
             Entity EntityB = collisionEvent.EntityB;
 
-            if (HealthGroup.HasComponent(EntityA) && DamageGroup.HasComponent(EntityB))
+            bool AisHealth = HealthGroup.HasComponent(EntityA);
+            bool BisHealth = HealthGroup.HasComponent(EntityB);
+            bool AisDamage = DamageGroup.HasComponent(EntityA);
+            bool BisDamage = DamageGroup.HasComponent(EntityB);
+            
+            if (AisHealth && BisDamage)
             {
                 Modify(ref EntityA, ref EntityB);
             }
-            else if (HealthGroup.HasComponent(EntityB) && DamageGroup.HasComponent(EntityA))
+            else if (AisDamage && BisHealth)
             {
                 Modify(ref EntityB, ref EntityA);
             }
@@ -41,14 +47,19 @@ public class DamageSystem : JobComponentSystem
 
         private void Modify(ref Entity health, ref Entity damageTag)
         {
-            HealthComponent modified = HealthGroup[health];
+            
             DamageTag damage = DamageGroup[damageTag];
+            if(damage.Hit)
+                return;
+            HealthComponent modified = HealthGroup[health];
             modified.CurrentHealth -= damage.Damage;
             if (modified.CurrentHealth <= 0)
             {
                 modified.Dead = true;
             }
+            damage.Hit = true;
             HealthGroup[health] = modified;
+            DamageGroup[damageTag] = damage;
         }
     }
 
@@ -56,14 +67,12 @@ public class DamageSystem : JobComponentSystem
     {
         var job = new DamageJob();
 
-        job.DamageGroup = GetComponentDataFromEntity<DamageTag>(true);
+        job.DamageGroup = GetComponentDataFromEntity<DamageTag>(false);
         job.HealthGroup = GetComponentDataFromEntity<HealthComponent>(false);
 
-        JobHandle jobHandle = job.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld,
-            inputDependencies);
+        JobHandle jobHandle = job.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDependencies);
         jobHandle.Complete();
         
         return jobHandle;
-
     }
 }

@@ -4,4 +4,5 @@ using Unity.Entities;
 public struct DamageTag : IComponentData
 {
     public float Damage;
+    public bool Hit;
 }
