@@ -5,7 +5,9 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Systems;
+using Unity.Transforms;
 
+[UpdateBefore(typeof(TransformSystemGroup))]
 public class DeathSystem : SystemBase
 {
     private EndSimulationEntityCommandBufferSystem commandBufferSystem;
@@ -20,6 +22,14 @@ public class DeathSystem : SystemBase
     {
         EntityCommandBuffer entityCommandBuffer = commandBufferSystem.CreateCommandBuffer();
 
+        Entities.ForEach((Entity entity, in DamageTag damageTag) =>
+        {
+            if (damageTag.Hit)
+            {
+                entityCommandBuffer.DestroyEntity(entity);
+            }
+        }).Schedule();
+        
         Entities.ForEach((Entity entity, in HealthComponent healthComponent) =>
         {
             if (healthComponent.Dead)
