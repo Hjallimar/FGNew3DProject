@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -63,16 +64,26 @@ public class InputSystem : SystemBase
             return;
         }
         EntityCommandBuffer entityCommandBuffer = commandBufferSystem.CreateCommandBuffer();
- 
+
+
+        float3 spawnPos = default;
         Entities
             .WithAll<PlayerFirepointTag>()
-            .ForEach((in Translation translation) =>
+            .ForEach((in LocalToWorld localToWorld) =>
             {
-                Entity Bullet = BulletSettings.Prefab;
-                entityCommandBuffer.Instantiate(Bullet);
-                EntityManager.SetComponentData(Bullet, translation);
-            }).Schedule();
+                spawnPos = localToWorld.Position;
+            }).Run();
     
+        
+        Entity Bullet = BulletSettings.Prefab;
+        Translation spawnTranslation = new Translation
+        {
+            Value = spawnPos
+        };
+        
+        EntityManager.SetComponentData(Bullet, spawnTranslation);
+        entityCommandBuffer.Instantiate(Bullet);
+        
         commandBufferSystem.AddJobHandleForProducer(this.Dependency);
     }
 }

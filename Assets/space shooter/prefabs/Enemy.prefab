@@ -385,8 +385,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6fa5464b2675434c8fad4fd29ad1d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentHealth: 10
-  MaxHealth: 10
+  CurrentHealth: 1
+  MaxHealth: 1
   Dead: 0
 --- !u!114 &8735344407471643636
 MonoBehaviour:
@@ -401,5 +401,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentVelocity: {x: 0, y: 0, z: 0}
-  MaxSpeed: 8
-  Acceleration: 2
+  MaxSpeed: 2
+  Acceleration: 500
