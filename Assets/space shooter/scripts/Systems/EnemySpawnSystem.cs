@@ -3,30 +3,22 @@ using Unity.Entities;
 
 public class EnemySpawnSystem : SystemBase
 {
-    // private float SpawnTimer = 0.0f;
-    // private float SpawnDelay;
-
     private EnemySettings EnemySettings;
 
-    protected override void OnCreate()
+    protected override void OnUpdate()
     {
-        base.OnCreate();
-        
         if (!TryGetSingleton(out EnemySettings))
         {
             Enabled = false;
             return;
         }
-    }
-
-    protected override void OnUpdate()
-    {
-        var EnemyInstances = new NativeArray<Entity>(EnemySettings.Count, Allocator.Temp);
-
-        var updatedEnemy = EnemySettings.Prefab;
-        EntityManager.AddComponent<Disabled>(updatedEnemy);
         
-        EntityManager.Instantiate(updatedEnemy, EnemyInstances);
+        var EnemyInstances = new NativeArray<Entity>(EnemySettings.Count, Allocator.Temp);
+        
+        var disabledEnemy = EnemySettings.Prefab;
+        EntityManager.AddComponent<Disabled>(disabledEnemy);
+        
+        EntityManager.Instantiate(disabledEnemy, EnemyInstances);
 
         EnemyInstances.Dispose();
 
