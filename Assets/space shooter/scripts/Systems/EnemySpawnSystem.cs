@@ -16,9 +16,9 @@ public class EnemySpawnSystem : SystemBase
         var EnemyInstances = new NativeArray<Entity>(EnemySettings.Count, Allocator.Temp);
         
         var disabledEnemy = EnemySettings.Prefab;
-        EntityManager.AddComponent<Disabled>(disabledEnemy);
+        //EntityManager.AddComponent<Disabled>(disabledEnemy);
         
-        EntityManager.Instantiate(disabledEnemy, EnemyInstances);
+        //EntityManager.Instantiate(disabledEnemy, EnemyInstances);
 
         EnemyInstances.Dispose();
 

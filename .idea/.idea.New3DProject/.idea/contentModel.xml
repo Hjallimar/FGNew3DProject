@@ -13,18 +13,25 @@
               <e p="EnemySettings.cs" t="Include" />
             </e>
             <e p="Componenets" t="Include">
-              <e p="DamageSystem.cs" t="Include" />
-              <e p="DeathSystem.cs" t="Include" />
+              <e p="ForwardMovementComponent.cs" t="Include" />
               <e p="HealthComponent.cs" t="Include" />
               <e p="MoveComponent.cs" t="Include" />
             </e>
             <e p="Player.cs" t="Include" />
             <e p="Systems" t="Include">
+              <e p="CollisionSystem.cs" t="Include" />
+              <e p="DamageSystem.cs" t="Include" />
+              <e p="DeathSystem.cs" t="Include" />
+              <e p="EnemyGradualSpawner.cs" t="Include" />
+              <e p="EnemySpawnSystem.cs" t="Include" />
               <e p="InputSystem.cs" t="Include" />
+              <e p="KillSystem.cs" t="Include" />
               <e p="MovementSystem.cs" t="Include" />
             </e>
             <e p="Tags" t="Include">
               <e p="DamageTag.cs" t="Include" />
+              <e p="EnemyTag.cs" t="Include" />
+              <e p="KillTag.cs" t="Include" />
               <e p="PlayerTag.cs" t="Include" />
             </e>
           </e>

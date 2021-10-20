@@ -7,20 +7,13 @@
   <component name="ChangeListManager">
     <list default="true" id="dd04ad63-9137-4179-bc8b-ad47b4c680bb" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.New3DProject/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.New3DProject/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.New3DProject/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.New3DProject/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.New3DProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.New3DProject/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/space shooter/scripts/Componenets/HealthComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/space shooter/scripts/Componenets/HealthComponent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/AssetImportWorker0-prev.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/AssetImportWorker0-prev.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/space shooter/prefabs/Enemy.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/space shooter/prefabs/Enemy.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/space shooter/scripts/Authoring/EnemySettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/space shooter/scripts/Authoring/EnemySettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/space shooter/scripts/Systems/EnemyGradualSpawner.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/space shooter/scripts/Systems/EnemyGradualSpawner.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/space shooter/scripts/Systems/EnemySpawnSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/space shooter/scripts/Systems/EnemySpawnSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Logs/ApiUpdaterCheck.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/ApiUpdaterCheck.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Logs/AssetImportWorker0.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/AssetImportWorker0.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-AssetImportWorker0.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-AssetImportWorker0.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe0.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe0.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe1.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe1.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe2.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe2.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe3.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe3.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe4.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe4.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe5.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe5.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe6.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe6.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe7.log" beforeDir="false" afterPath="$PROJECT_DIR$/Logs/shadercompiler-UnityShaderCompiler.exe7.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,10 +31,8 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@0.17.0-preview.42/Unity.Entities/EntityDataAccess.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/space shooter/scripts/Componenets/HealthComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/space shooter/scripts/Componenets/MoveComponent.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/space shooter/scripts/Componenets/DamageSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@0.17.0-preview.42/Unity.Entities/ComponentSystemGroup.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@0.17.0-preview.42/Unity.Entities/EntityComponentStoreDebug.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/space shooter/scripts/Componenets/DeathSystem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@0.17.0-preview.42/Unity.Entities/ComponentSystem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/space shooter/scripts/Tags/DamageTag.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@0.17.0-preview.42/Unity.Transforms/Rotation.cs" root0="SKIP_HIGHLIGHTING" />
@@ -49,6 +40,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@0.17.0-preview.42/Unity.Entities/Iterators/EntityQuery.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@0.17.0-preview.42/Unity.Entities/SystemBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.entities@0.17.0-preview.42/Unity.Entities/ScriptBehaviourUpdateOrder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/space shooter/scripts/Tags/KillTag.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -66,6 +58,11 @@
         <option value="$PROJECT_DIR$/Assets/space shooter/scripts/Componenets/HealthComponent.cs" />
         <option value="$PROJECT_DIR$/Assets/space shooter/scripts/Componenets/DamageSystem.cs" />
         <option value="$PROJECT_DIR$/Assets/space shooter/scripts/Componenets/DeathSystem.cs" />
+        <option value="$PROJECT_DIR$/Assets/space shooter/scripts/Systems/EnemySpawnSystem.cs" />
+        <option value="$PROJECT_DIR$/Assets/space shooter/scripts/Authoring/EnemySettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/space shooter/scripts/Systems/EnemyGradualSpawner.cs" />
+        <option value="$PROJECT_DIR$/Assets/space shooter/scripts/Tags/KillTag.cs" />
+        <option value="$PROJECT_DIR$/Assets/space shooter/scripts/Systems/KillSystem.cs" />
       </list>
     </option>
   </component>
@@ -87,10 +84,10 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor &amp; Play">
-    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="11248">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="11248" />
       <option name="selectedOptions">
         <set />
       </option>
@@ -147,22 +144,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="530" height="464" key="DebuggerActiveHint/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634216600954" />
-    <state width="1877" height="135" key="GridCell.Tab.0.bottom" timestamp="1634289411422">
+    <state width="1877" height="375" key="GridCell.Tab.0.bottom" timestamp="1634721274212">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="135" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634289411422" />
-    <state width="1877" height="135" key="GridCell.Tab.0.center" timestamp="1634289411422">
+    <state width="1877" height="375" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634721274212" />
+    <state width="1877" height="375" key="GridCell.Tab.0.center" timestamp="1634721274212">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="135" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634289411422" />
-    <state width="1877" height="135" key="GridCell.Tab.0.left" timestamp="1634289411422">
+    <state width="1877" height="375" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634721274212" />
+    <state width="1877" height="375" key="GridCell.Tab.0.left" timestamp="1634721274212">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="135" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634289411422" />
-    <state width="1877" height="135" key="GridCell.Tab.0.right" timestamp="1634289411422">
+    <state width="1877" height="375" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634721274212" />
+    <state width="1877" height="375" key="GridCell.Tab.0.right" timestamp="1634721274212">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="135" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634289411422" />
+    <state width="1877" height="375" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1634721274212" />
     <state width="1877" height="135" key="GridCell.Tab.1.bottom" timestamp="1634289411423">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
