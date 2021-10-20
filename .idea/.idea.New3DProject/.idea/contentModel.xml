@@ -20,6 +20,7 @@
             <e p="Player.cs" t="Include" />
             <e p="Systems" t="Include">
               <e p="CollisionSystem.cs" t="Include" />
+              <e p="ContainmentSystem.cs" t="Include" />
               <e p="DamageSystem.cs" t="Include" />
               <e p="DeathSystem.cs" t="Include" />
               <e p="EnemyGradualSpawner.cs" t="Include" />
@@ -32,6 +33,7 @@
               <e p="DamageTag.cs" t="Include" />
               <e p="EnemyTag.cs" t="Include" />
               <e p="KillTag.cs" t="Include" />
+              <e p="PlayerFirepointTag.cs" t="Include" />
               <e p="PlayerTag.cs" t="Include" />
             </e>
           </e>

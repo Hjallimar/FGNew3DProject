@@ -22,16 +22,6 @@ public class SpawnSystem : SystemBase
         Enabled = false;
     }
 
-    private void SpawnBullets()
-    {
-        var BulletSettings = GetSingleton<BulletSettings>();
-
-        var BulletInstances = new NativeArray<Entity>(BulletSettings.Count, Allocator.Temp);
-        EntityManager.Instantiate(BulletSettings.Prefab, BulletInstances);
-
-        BulletInstances.Dispose();
-    }
-
     private void SpawnEnemies()
     {
         var EnemySettings = GetSingleton<EnemySettings>();

@@ -1,24 +1,38 @@
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 
 public class InputSystem : SystemBase
 {
+    protected float TimeSinceLastBullet = 0.0f;
+    protected float cd = 0.4f;
+    private BulletSettings BulletSettings;
+    private EndSimulationEntityCommandBufferSystem commandBufferSystem;
+    
+    protected override void OnCreate()
+    {
+        base.OnCreate();
+        commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+    }
+    
     protected override void OnUpdate()
     {
-        // Assign values to local variables captured in your job here, so that it has
-        // everything it needs to do its work when it runs later.
-        // For example,
-        //     float deltaTime = Time.DeltaTime;
-
-        // This declares a new kind of job, which is a unit of work to do.
-        // The job is declared as an Entities.ForEach with the target components as parameters,
-        // meaning it will process all entities in the world that have both
-        // Translation and Rotation components. Change it to process the component
-        // types you want.
-
         float deltaTime = Time.DeltaTime;
+        GatherMovementInput(deltaTime);
         
+        TimeSinceLastBullet += deltaTime;
+        
+        if (Input.GetKeyDown(KeyCode.Space) && TimeSinceLastBullet > cd)
+        {
+            TimeSinceLastBullet = 0.0f;
+       
+            Fire();
+        }
+    }
+
+    protected void GatherMovementInput(float deltaTime)
+    {
         Vector3 Direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0.0f).normalized;
         bool    DirectionMagnitudeIsApproximatelyZero = Mathf.Approximately(Direction.magnitude, 0);
         
@@ -40,5 +54,25 @@ public class InputSystem : SystemBase
                     }
                 }
             }).Schedule();
+    }
+
+    protected void Fire()
+    {
+        if (!TryGetSingleton(out BulletSettings))
+        {
+            return;
+        }
+        EntityCommandBuffer entityCommandBuffer = commandBufferSystem.CreateCommandBuffer();
+ 
+        Entities
+            .WithAll<PlayerFirepointTag>()
+            .ForEach((in Translation translation) =>
+            {
+                Entity Bullet = BulletSettings.Prefab;
+                entityCommandBuffer.Instantiate(Bullet);
+                EntityManager.SetComponentData(Bullet, translation);
+            }).Schedule();
+    
+        commandBufferSystem.AddJobHandleForProducer(this.Dependency);
     }
 }
