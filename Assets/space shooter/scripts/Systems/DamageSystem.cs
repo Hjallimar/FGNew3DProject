@@ -1,8 +1,6 @@
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Systems;
 
@@ -22,7 +20,7 @@ public class DamageSystem : JobComponentSystem
     [BurstCompile]
     struct DamageJob : ICollisionEventsJob
     {
-        public ComponentDataFromEntity<DamageTag> DamageGroup;
+        public ComponentDataFromEntity<DamageComponent> DamageGroup;
         public ComponentDataFromEntity<HealthComponent> HealthGroup;
 
         public void Execute(CollisionEvent collisionEvent)
@@ -48,7 +46,7 @@ public class DamageSystem : JobComponentSystem
         private void Modify(ref Entity health, ref Entity damageTag)
         {
             
-            DamageTag damage = DamageGroup[damageTag];
+            DamageComponent damage = DamageGroup[damageTag];
             if(damage.Hit)
                 return;
             HealthComponent modified = HealthGroup[health];
@@ -67,7 +65,7 @@ public class DamageSystem : JobComponentSystem
     {
         var job = new DamageJob();
 
-        job.DamageGroup = GetComponentDataFromEntity<DamageTag>(false);
+        job.DamageGroup = GetComponentDataFromEntity<DamageComponent>(false);
         job.HealthGroup = GetComponentDataFromEntity<HealthComponent>(false);
 
         JobHandle jobHandle = job.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDependencies);

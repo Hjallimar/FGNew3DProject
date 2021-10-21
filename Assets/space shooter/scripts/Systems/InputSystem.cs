@@ -1,4 +1,3 @@
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -6,15 +5,15 @@ using UnityEngine;
 
 public class InputSystem : SystemBase
 {
-    protected float TimeSinceLastBullet = 0.0f;
-    protected float cd = 0.4f;
-    private BulletSettings BulletSettings;
-    private EndSimulationEntityCommandBufferSystem commandBufferSystem;
+    private float                                  TimeSinceLastBullet = 0.0f;
+    private float                                  Cooldown                  = 0.4f;
+    private BulletSettings                         BulletSettings;
+    private EndSimulationEntityCommandBufferSystem CommandBufferSystem;
     
     protected override void OnCreate()
     {
         base.OnCreate();
-        commandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+        CommandBufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
     }
     
     protected override void OnUpdate()
@@ -24,7 +23,7 @@ public class InputSystem : SystemBase
         
         TimeSinceLastBullet += deltaTime;
         
-        if (Input.GetKeyDown(KeyCode.Space) && TimeSinceLastBullet > cd)
+        if (Input.GetKeyDown(KeyCode.Space) && TimeSinceLastBullet > Cooldown)
         {
             TimeSinceLastBullet = 0.0f;
        
@@ -32,7 +31,7 @@ public class InputSystem : SystemBase
         }
     }
 
-    protected void GatherMovementInput(float deltaTime)
+    private void GatherMovementInput(float deltaTime)
     {
         Vector3 Direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0.0f).normalized;
         bool    DirectionMagnitudeIsApproximatelyZero = Mathf.Approximately(Direction.magnitude, 0);
@@ -57,13 +56,13 @@ public class InputSystem : SystemBase
             }).Schedule();
     }
 
-    protected void Fire()
+    private void Fire()
     {
         if (!TryGetSingleton(out BulletSettings))
         {
             return;
         }
-        EntityCommandBuffer entityCommandBuffer = commandBufferSystem.CreateCommandBuffer();
+        EntityCommandBuffer entityCommandBuffer = CommandBufferSystem.CreateCommandBuffer();
 
 
         float3 spawnPos = default;
@@ -84,6 +83,6 @@ public class InputSystem : SystemBase
         EntityManager.SetComponentData(Bullet, spawnTranslation);
         entityCommandBuffer.Instantiate(Bullet);
         
-        commandBufferSystem.AddJobHandleForProducer(this.Dependency);
+        CommandBufferSystem.AddJobHandleForProducer(this.Dependency);
     }
 }

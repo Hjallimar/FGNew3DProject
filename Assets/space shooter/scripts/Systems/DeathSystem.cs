@@ -1,10 +1,4 @@
-using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
-using Unity.Jobs;
-using Unity.Mathematics;
-using Unity.Physics;
-using Unity.Physics.Systems;
 using Unity.Transforms;
 
 [UpdateBefore(typeof(TransformSystemGroup))]
@@ -22,7 +16,7 @@ public class DeathSystem : SystemBase
     {
         EntityCommandBuffer entityCommandBuffer = commandBufferSystem.CreateCommandBuffer();
 
-        Entities.ForEach((Entity entity, in DamageTag damageTag) =>
+        Entities.ForEach((Entity entity, in DamageComponent damageTag) =>
         {
             if (damageTag.Hit)
             {

@@ -7,7 +7,6 @@ public class ContainmentSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        float deltaTime = Time.DeltaTime;
         Entities.WithAll<PlayerTag>()
             .ForEach((ref Translation translation) =>
             {

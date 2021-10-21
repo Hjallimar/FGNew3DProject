@@ -2,7 +2,6 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Systems;
 
@@ -24,7 +23,7 @@ public class KillSystem : JobComponentSystem
     {
         [ReadOnly] public ComponentDataFromEntity<KillTag> KillGroup;
         public ComponentDataFromEntity<HealthComponent> HealthGroup;
-        public ComponentDataFromEntity<DamageTag> DamageGroup;
+        public ComponentDataFromEntity<DamageComponent> DamageGroup;
 
         public void Execute(CollisionEvent collisionEvent)
         {
@@ -63,7 +62,7 @@ public class KillSystem : JobComponentSystem
 
         private void ModifyBullet(ref Entity Bullet)
         {
-            DamageTag modified = DamageGroup[Bullet];
+            DamageComponent modified = DamageGroup[Bullet];
             modified.Hit = true;
             DamageGroup[Bullet] = modified;
         }
@@ -75,7 +74,7 @@ public class KillSystem : JobComponentSystem
 
         job.KillGroup = GetComponentDataFromEntity<KillTag>(true);
         job.HealthGroup = GetComponentDataFromEntity<HealthComponent>(false);
-        job.DamageGroup = GetComponentDataFromEntity<DamageTag>(false);
+        job.DamageGroup = GetComponentDataFromEntity<DamageComponent>(false);
         
         JobHandle jobHandle = job.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDependencies);
         jobHandle.Complete();

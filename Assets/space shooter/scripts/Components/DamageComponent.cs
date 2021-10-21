@@ -1,7 +1,7 @@
 using Unity.Entities;
 
 [GenerateAuthoringComponent]
-public struct DamageTag : IComponentData
+public struct DamageComponent : IComponentData
 {
     public float Damage;
     public bool Hit;
